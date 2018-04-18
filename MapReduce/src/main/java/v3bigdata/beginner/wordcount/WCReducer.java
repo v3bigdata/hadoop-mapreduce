@@ -1,4 +1,4 @@
-package beginner.wordcount;
+package v3bigdata.beginner.wordcount;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -20,8 +20,6 @@ public class WCReducer extends Reducer<Text,IntWritable,Text,LongWritable> {
 
     @Override
     protected void reduce(Text key, Iterable<IntWritable> values, Context context) throws IOException, InterruptedException {
-        super.reduce(key, values, context);
-
 
         /**
          * Input to the reducer will come from Mapper

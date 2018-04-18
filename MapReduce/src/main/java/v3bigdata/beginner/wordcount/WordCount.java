@@ -1,12 +1,16 @@
-package beginner.wordcount;
+package v3bigdata.beginner.wordcount;
 
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
+import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 
 import java.io.IOException;
 
@@ -23,12 +27,15 @@ public class WordCount {
      * <p>
      * Input file and Output file location are passed as
      * parameter while submitting java jar
+     * <p>
+     * delet the existing output file before running the job
      *
      * @param args
      * @throws IOException
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
 
+        System.out.println("Starting MapReduce Job....");
         /**
          *Configuration object is used for setting different hadoop
          *Mapreduce configurations like username etc.
@@ -42,12 +49,25 @@ public class WordCount {
          * We have got instance of Job by passing conf and Job name
          */
         Job job = Job.getInstance(conf, "WordCount");
+        /**
+         *  Driver class as JarClass
+         */
         job.setJarByClass(WordCount.class);
 
         /**
          * Set the Mapper class for the job
          */
         job.setMapperClass(WCMapper.class);
+//TODo Error: java.io.IOException: Type mismatch in key from map:
+        /**
+         * Set this property as output `key` of mapper class
+         */
+        job.setMapOutputKeyClass(Text.class);
+        /**
+         * Set this property as output `value` of mapper class
+         */
+        job.setMapOutputValueClass(IntWritable.class);
+
 
         /**
          * Similarly Set the Reducer class for the job
@@ -55,7 +75,7 @@ public class WordCount {
         job.setReducerClass(WCReducer.class);
 
         /**
-         * We can set number of Reducer by this property
+         * We can set number of Reducer by this property on the other hand
          * Number of Mapper can not be set with code,
          * It depends on size of input file
          * Number of Mapper will be No. of InputSplit of Input File
@@ -79,6 +99,13 @@ public class WordCount {
          */
 
         job.setOutputValueClass(LongWritable.class);
+
+/**
+ * Set this property manually otherwise it might throw exception
+ */
+        job.setInputFormatClass(TextInputFormat.class);
+        job.setOutputFormatClass(TextOutputFormat.class);
+
 /**
  * Convert input/output path, passed as parameter, value to Path
  */
@@ -93,8 +120,23 @@ public class WordCount {
         /**
          * Output location in HDFS
          */
+
         FileOutputFormat.setOutputPath(job, outPath);
 
+/**
+ * Delete the output location if it already exists otherwise it will throw execption directory already exists
+ */
 
+        FileSystem.get(conf).delete(outPath, true);
+
+
+/**
+ * Job must be submitted for it to start
+ */
+        job.submit();
+        System.out.println("Job Submitted....");
+        job.waitForCompletion(true);
     }
+
+
 }

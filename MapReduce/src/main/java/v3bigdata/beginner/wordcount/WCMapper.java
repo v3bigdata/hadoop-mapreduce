@@ -1,4 +1,4 @@
-package beginner.wordcount;
+package v3bigdata.beginner.wordcount;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
@@ -19,6 +19,7 @@ import java.io.IOException;
  */
 public class WCMapper extends Mapper<LongWritable,Text,Text,IntWritable> {
 
+
     /**
      * For wordcount problem,
      * Input will come as each line.
@@ -29,7 +30,7 @@ public class WCMapper extends Mapper<LongWritable,Text,Text,IntWritable> {
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        super.map(key, value, context);
+       // super.map(key, value, context);
 
         /**
          * Convert String of words delimited by ','(Here considering comma, it can be anything)
