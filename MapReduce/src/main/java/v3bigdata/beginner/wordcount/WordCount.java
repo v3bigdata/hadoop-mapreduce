@@ -16,6 +16,13 @@ import java.io.IOException;
 
 /**
  * @author ketankk on 11/4/18
+ * Run
+ * $ mvn clean install
+ * It will generate .jar file inside target
+ * Copy that Jar to Hadoop cluster node.
+ * Run this command for submitting MapReduce job
+ *
+ * hadoop jar /Jar/location/in/local/JarName.jar v3bigdata.beginner.wordcount.WordCount /inputfile/in/hdfs/filname.ext /outfile/in/hdfs/dirname
  */
 public class WordCount {
 
@@ -28,7 +35,7 @@ public class WordCount {
      * Input file and Output file location are passed as
      * parameter while submitting java jar
      * <p>
-     * delet the existing output file before running the job
+     * delete the existing output file before running the job
      *
      * @param args
      * @throws IOException
@@ -58,7 +65,6 @@ public class WordCount {
          * Set the Mapper class for the job
          */
         job.setMapperClass(WCMapper.class);
-//TODo Error: java.io.IOException: Type mismatch in key from map:
         /**
          * Set this property as output `key` of mapper class
          */
