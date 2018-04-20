@@ -24,7 +24,7 @@ import java.io.IOException;
  *
  * hadoop jar /Jar/location/in/local/JarName.jar v3bigdata.beginner.wordcount.WordCount /inputfile/in/hdfs/filname.ext /outfile/in/hdfs/dirname
  */
-public class WordCount {
+public class WordCount  {
 
     /**
      * Entry Method for WordCount programme in MapReduce
@@ -40,6 +40,7 @@ public class WordCount {
      * @param args
      * @throws IOException
      */
+
     public static void main(String[] args) throws IOException, ClassNotFoundException, InterruptedException {
 
         System.out.println("Starting MapReduce Job....");
